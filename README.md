@@ -6,5 +6,7 @@ Shell is a simple UNIX command interpreter that replicates functionalities of th
 This program was written entirely in C Language. It is based on the Thompson Shell.
 
 #AUTHORS
+
 DANIEL IZEBHIGIE
+
 OMOBOLAJI OLADELE
