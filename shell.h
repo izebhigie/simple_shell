@@ -1,6 +1,7 @@
 #ifndef _SHELL_H_
 #define _SHELL_H_
 
+/* Standard Libraries */
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -12,14 +13,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>
 
+/* Constants */
+#define BUFFER_SIZE 1024
 #define END_OF_FILE -2
 #define EXIT -3
 
 /* Global Environments */
 extern char **environ;
 
-/* Gloval programs names */
+/* Global programs names */
 char *name;
 
 /* Global history counter */
@@ -38,9 +42,9 @@ typedef struct list_s
 } list_t;
 
 /**
- * struct builtin_s - A struct type defining builtin commands.
+ * struct builtin_s - Struct type defining builtin commands.
  * @name: Name of the builtin command.
- * @f: The builtin command's function.
+ * @f: builtin command's function.
  */
 typedef struct builtin_s
 {
@@ -75,7 +79,7 @@ int execute(char **args, char **front);
 void free_list(list_t *head);
 char *_itoa(int num);
 
-/* Input Helpers */
+/* The Input Helpers */
 void handle_line(char **line, ssize_t read);
 void variable_replacement(char **args, int *exe_ret);
 char *get_args(char *line, int *exe_ret);
@@ -86,7 +90,7 @@ int check_args(char **args);
 void free_args(char **args, char **front);
 char **replace_aliases(char **args);
 
-/* String functions */
+/* The String functions */
 int _strlen(const char *s);
 char *_strcat(char *dest, const char *src);
 char *_strncat(char *dest, const char *src, size_t n);
@@ -96,7 +100,7 @@ int _strspn(char *s, char *accept);
 int _strcmp(char *s1, char *s2);
 int _strncmp(const char *s1, const char *s2, size_t n);
 
-/* Builtins */
+/* The Builtins */
 int (*get_builtin(char *command))(char **args, char **front);
 int shellby_exit(char **args, char **front);
 int shellby_env(char **args, char __attribute__((__unused__)) **front);
@@ -106,12 +110,12 @@ int shellby_cd(char **args, char __attribute__((__unused__)) **front);
 int shellby_alias(char **args, char __attribute__((__unused__)) **front);
 int shellby_help(char **args, char __attribute__((__unused__)) **front);
 
-/* Builtin Helpers */
+/* The Builtin Helpers */
 char **_copyenv(void);
 void free_env(void);
 char **_getenv(const char *var);
 
-/* Error Handling */
+/* The Error Handling */
 int create_error(char **args, int err);
 char *error_env(char **args);
 char *error_1(char **args);
@@ -121,7 +125,7 @@ char *error_2_syntax(char **args);
 char *error_126(char **args);
 char *error_127(char **args);
 
-/* Linkedlist Helpers */
+/* The Linkedlist Helpers */
 alias_t *add_alias_end(alias_t **head, char *name, char *value);
 void free_alias_list(alias_t *head);
 list_t *add_node_end(list_t **head, char *dir);
@@ -138,6 +142,5 @@ void help_unsetenv(void);
 void help_history(void);
 
 int proc_file_commands(char *file_path, int *exe_ret);
-
 
 #endif /* _SHELL_H_ */
