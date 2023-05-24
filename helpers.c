@@ -1,155 +1,174 @@
 #include "shell.h"
 
-void free_args(char **args, char **front);
-char *get_pid(void);
-char *get_env_value(char *beginning, int len);
-void variable_replacement(char **args, int *exe_ret);
-
 /**
- * free_args - Frees up memory taken by args.
- * @args: A null-terminated double pointer containing commands/arguments.
- * @front: A double pointer to the beginning of args.
- */
-void free_args(char **args, char **front)
+* mystrchr - it searches for a string and return its first occurence
+* @str: Input value of the string
+* @c: Input value of the search input
+* Return: Return a char pointer
+*/
+char *mystrchr(const char *str, char c)
 {
-	size_t i;
+	int i = 0, counter = 0, pcount = 0, allocatedcount = 0, j = 0;
+	char *mystr;
 
-	for (i = 0; args[i] || args[i + 1]; i++)
-		free(args[i]);
-
-	free(front);
-}
-
-/**
- * get_pid - Gets the current process ID.
- * Description: Opens the stat file, a space-delimited file containing
- *              information about the current process. The PID is the
- *              first word in the file. The function reads the PID into
- *              a buffer and replace the space at the end with a \0 byte.
- *
- * Return: The current process ID or NULL on failure.
- */
-char *get_pid(void)
-{
-	size_t i = 0;
-	char *buffer;
-	ssize_t file;
-
-	file = open("/proc/self/stat", O_RDONLY);
-	if (file == -1)
+	while (str[i] != '\0')
 	{
-		perror("Cant read file");
-		return (NULL);
+		counter = counter + 1;
+		i = i + 1;
 	}
-	buffer = malloc(120);
-	if (!buffer)
+	while (*str != c)
 	{
-		close(file);
-		return (NULL);
+		pcount = pcount + 1;
+		str++;
 	}
-	read(file, buffer, 120);
-	while (buffer[i] != ' ')
-		i++;
-	buffer[i] = '\0';
-
-	close(file);
-	return (buffer);
-}
-
-/**
- * get_env_value - Gets the value corresponding to an environmental variable.
- * @beginning: The environmental variable to search for.
- * @len: The length of the environmental variable to search for.
- *
- * Return: If the variable is not found - an empty string.
- *         Otherwise - the value of the environmental variable.
- *
- * Description: Variables are stored in the format VARIABLE=VALUE.
- */
-char *get_env_value(char *beginning, int len)
-{
-	char **var_addr;
-	char *replacement = NULL, *temp, *var;
-
-	var = malloc(len + 1);
-	if (!var)
-		return (NULL);
-	var[0] = '\0';
-	_strncat(var, beginning, len);
-
-	var_addr = _getenv(var);
-	free(var);
-	if (var_addr)
+	allocatedcount = counter - pcount + 1;
+	mystr = malloc(allocatedcount);
+	if (mystr == NULL)
 	{
-		temp = *var_addr;
-		while (*temp != '=')
-			temp++;
-		temp++;
-		replacement = malloc(_strlen(temp) + 1);
-		if (replacement)
-			_strcpy(replacement, temp);
+		display_str("Memory failed to allocate\n");
+		exit(0);
 	}
-
-	return (replacement);
-}
-
-/**
- * variable_replacement - Handles variable replacement.
- * @line: A double pointer containing the command and arguments.
- * @exe_ret: A pointer to the return value of the last executed command.
- *
- * Description: Replaces $$ with the current PID, $? with the return value
- *              of the last executed program, and envrionmental variables
- *              preceded by $ with their corresponding value.
- */
-void variable_replacement(char **line, int *exe_ret)
-{
-	int j, k = 0, len;
-	char *replacement = NULL, *old_line = NULL, *new_line;
-
-	old_line = *line;
-	for (j = 0; old_line[j]; j++)
+	while (*str)
 	{
-		if (old_line[j] == '$' && old_line[j + 1] &&
-				old_line[j + 1] != ' ')
+		*(mystr + j) = *str;
+		j = j + 1;
+		str++;
+	}
+	return (mystr);
+}
+/**
+ * mystrncmp - it compares the ascii of two string in ntimes
+ * @str1: Input variable of str1
+ * @str2: Input variable of str2
+ * @n: Input variable of ntimes
+ * Return: Returns the ascii differences between str1 and str2
+ */
+
+int mystrncmp(const char *str1, const char *str2, int n)
+{
+	int len1 = 0, len2 = 0, counter = 0, i = 0, j = 0;
+
+	while (str1[i] != '\0')
+		len1 = len1 + 1, i = i + 1;
+	while (str2[j] != '\0')
+		len2 = len2 + 1, j = j + 1;
+	if (len1 >= n && len2 >= n)
+	{
+		while (counter < n)
 		{
-			if (old_line[j + 1] == '$')
-			{
-				replacement = get_pid();
-				k = j + 2;
-			}
-			else if (old_line[j + 1] == '?')
-			{
-				replacement = _itoa(*exe_ret);
-				k = j + 2;
-			}
-			else if (old_line[j + 1])
-			{
-				/* extract the variable name to search for */
-				for (k = j + 1; old_line[k] &&
-						old_line[k] != '$' &&
-						old_line[k] != ' '; k++)
-					;
-				len = k - (j + 1);
-				replacement = get_env_value(&old_line[j + 1], len);
-			}
-			new_line = malloc(j + _strlen(replacement)
-					  + _strlen(&old_line[k]) + 1);
-			if (!line)
-				return;
-			new_line[0] = '\0';
-			_strncat(new_line, old_line, j);
-			if (replacement)
-			{
-				_strcat(new_line, replacement);
-				free(replacement);
-				replacement = NULL;
-			}
-			_strcat(new_line, &old_line[k]);
-			free(old_line);
-			*line = new_line;
-			old_line = new_line;
-			j = -1;
+			if (*str1 < *str2)
+				return (*str1 - *str2);
+			else if (*str1 > *str2)
+				return (*str1 - *str2);
+			counter = counter + 1;
+			str1++, str2++;
 		}
 	}
+	else if ((len1 < n) && len1 <= len2)
+	{
+		while (counter < len1)
+		{
+			if (*str1 < *str2)
+				return (*str1 - *str2);
+			else if (*str1 > *str2)
+				return (*str1 - *str2);
+			counter = counter + 1;
+			if (counter == len1 && *str1 == *str2 && len1 == len2)
+				return (0);
+			else if (counter == len1)
+				return (*str1 - *str2);
+			str1++, str2++;
+		}
+	}
+	else if ((len2 < n) && len2 <= len1)
+	{
+		while (counter < len2)
+		{
+			if (*str1 < *str2)
+				return (*str1 - *str2);
+			else if (*str1 > *str2)
+				return (*str1 - *str2);
+			counter = counter + 1;
+			if (counter == len2 && *str1 == *str2 && len1 == len2)
+				return (0);
+			else if (counter == len2)
+				return (*str1 - *str2);
+			str1++, str2++;
+		}
+	}
+	return (0);
+}
+
+/**
+ * mystrcat - it concatenate two strings
+ * @dest: destination string
+ * @src: source string
+ * Return: Returns the concatenated string
+ */
+
+char *mystrcat(char *dest, const char *src)
+{
+	int ldest = 0, lsrc = 0, totallen = 0, i, j, k = 0, ccount = 0, ncount = 0;
+	char *ptr;
+
+	ldest = ldest + count_str(dest);
+
+	while (src[lsrc] != '\0')
+		lsrc = lsrc + 1;
+	totallen = ldest + lsrc + 1;
+	ptr = malloc(totallen);
+	if (ptr == NULL)
+	{
+		display_str("Unable to allocate memory\n");
+		exit(0);
+	}
+	for (i = 0; i < ldest; i++)
+	{
+		*(ptr + i) = dest[i];
+	}
+	for (j = i; j < totallen - 1; j++)
+	{
+		*(ptr + j) = src[k];
+		k++;
+	}
+	while (ccount < ldest)
+	{
+		dest++;
+		ccount = ccount + 1;
+	}
+	while (ncount < lsrc)
+	{
+		*dest = src[ncount];
+		ncount = ncount + 1;
+		dest++;
+	}
+	return (ptr);
+}
+/**
+ * mystrcpy - it copys from source to dest
+ * @dest: Destination variable
+ * @src: Source destination
+ * Return: Returns the pointer
+ */
+char *mystrcpy(char *dest, const char *src)
+{
+	int lsrc = 0, totallen = 0, i;
+	char *ptr;
+
+	while (src[lsrc] != '\0')
+		lsrc = lsrc + 1;
+	totallen = lsrc + 1;
+	ptr = malloc(totallen);
+	if (ptr == NULL)
+	{
+		display_str("Unable to allocate memory\n");
+		exit(0);
+	}
+	for (i = 0; i < lsrc + 1; i++)
+	{
+		*dest = src[i];
+		*(ptr + i) = src[i];
+		dest++;
+	}
+	return (ptr);
 }
