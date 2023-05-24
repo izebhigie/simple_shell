@@ -32,5 +32,5 @@ int main(void)
 	swap_int(&x, &y);
 	printf("After swap: x = %d, y = %d\n", x, y);
 
-	return 0;
+	return (0);
 }
