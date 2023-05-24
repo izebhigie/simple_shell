@@ -6,7 +6,7 @@ int _strcmp(char *s1, char *s2);
 int _strncmp(const char *s1, const char *s2, size_t n);
 
 /**
- * _strchr - Locates a character in a string.
+ * _strchr - This Locates a character in a string.
  * @s: The string to be searched.
  * @c: The character to be located.
  *
@@ -27,7 +27,7 @@ char *_strchr(char *s, char c)
 }
 
 /**
- * _strspn - Gets the length of a prefix substring.
+ * _strspn - This will Get the length of a prefix substring.
  * @s: The string to be searched.
  * @accept: The prefix to be measured.
  *
@@ -55,7 +55,7 @@ int _strspn(char *s, char *accept)
 }
 
 /**
- * _strcmp - Compares two strings.
+ * _strcmp - This Compares two strings.
  * @s1: The first string to be compared.
  * @s2: The second string to be compared.
  *
@@ -78,7 +78,7 @@ int _strcmp(char *s1, char *s2)
 }
 
 /**
- * _strncmp - Compare two strings.
+ * _strncmp - It Compares two strings.
  * @s1: Pointer to a string.
  * @s2: Pointer to a string.
  * @n: The first n bytes of the strings to compare.

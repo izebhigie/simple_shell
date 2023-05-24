@@ -5,7 +5,7 @@ int shellby_setenv(char **args, char __attribute__((__unused__)) **front);
 int shellby_unsetenv(char **args, char __attribute__((__unused__)) **front);
 
 /**
- * shellby_env - Prints the current environment.
+ * shellby_env - This will print the current environment.
  * @args: An array of arguments passed to the shell.
  * @front: A double pointer to the beginning of args.
  *
@@ -34,7 +34,7 @@ int shellby_env(char **args, char __attribute__((__unused__)) **front)
 }
 
 /**
- * shellby_setenv - Changes or adds an environmental variable to the PATH.
+ * shellby_setenv - This Changes or adds an environmental variable to the PATH.
  * @args: An array of arguments passed to the shell.
  * @front: A double pointer to the beginning of args.
  * Description: args[1] is the name of the new or existing PATH variable.
@@ -88,7 +88,8 @@ int shellby_setenv(char **args, char __attribute__((__unused__)) **front)
 }
 
 /**
- * shellby_unsetenv - Deletes an environmental variable from the PATH.
+ * shellby_unsetenv - This will delete an environmental variable
+ * from the PATH.
  * @args: An array of arguments passed to the shell.
  * @front: A double pointer to the beginning of args.
  * Description: args[1] is the PATH variable to remove.

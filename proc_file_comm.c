@@ -4,7 +4,8 @@ int cant_open(char *file_path);
 int proc_file_commands(char *file_path, int *exe_ret);
 
 /**
- * cant_open - If the file doesn't exist or lacks proper permissions, print
+ * cant_open - If the file doesn't exist or lacks proper permissions,
+ * it will print
  * a cant open error.
  * @file_path: Path to the supposed file.
  *
@@ -42,7 +43,7 @@ int cant_open(char *file_path)
 }
 
 /**
- * proc_file_commands - Takes a file and attempts to run the commands stored
+ * proc_file_commands -This Takes a file and attempts to run the commands stored
  * within.
  * @file_path: Path to the file.
  * @exe_ret: Return value of the last executed command.
